@@ -11,4 +11,4 @@ Implementations and analysis that contributes for the Ufrj Analytica Training Pr
 
 ## Note
 
-You should learn how to get the api's authorization before using this class. For instancing this class you need: an username, a client_id, a client_secret, a redirect_uri, a scope. To do so, I recommend this medium article:  https://discord.com/channels/690318605346275352/873192135921385492/873195887814393916
+You should learn how to get the api's authorization before using this class. For instancing this class you need: an username, a client_id, a client_secret, a redirect_uri, a scope. To do so, I recommend this medium article:  https://towardsdatascience.com/get-your-spotify-streaming-history-with-python-d5a208bbcbd3
