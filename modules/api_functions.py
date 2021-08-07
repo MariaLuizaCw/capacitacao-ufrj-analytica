@@ -24,7 +24,7 @@ class SpotApi:
             'Authorization': f'Bearer ' + self.token
         }  
 
-    def get_tracks_by_year(self, year, number_of_tracks=1000):
+    def get_tracks_by_year(self, year):
         self.geneate_token()
         tracks_artists = {'track_id': [], "track_name": [], "artist": [], "artist_id": []}
         yearRange = f'year:{year}'
