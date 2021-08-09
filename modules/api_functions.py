@@ -49,11 +49,15 @@ class SpotApi:
         
     def get_track_artist_id(self, track_name, artist):
         self.geneate_token()
-        url = f'https://api.spotify.com/v1/search?q=track:"{track_name}"%20artist:"{artist}"&type=track'
+        track_name = track_name.replace("#", "")
+        url = f'https://api.spotify.com/v1/search?q=track:{track_name}%20artist:{artist}&type=track'
         response = requests.get(url ,headers = self.headers, timeout = 5)
-        track = response.json()["tracks"]["items"][0]
-        return {"track_id": track["id"], "artist_id": track["artists"][0]["id"]}
-
+        tracks = response.json()["tracks"]["items"]
+        if len(tracks) > 0:
+            return {"track_id": tracks[0]["id"], "artist_id": tracks[0]["artists"][0]["id"], "name": tracks[0]["name"]}
+        else:
+            return {"track_id": "", "artist_id": "", "name": {}}
+        
     def get_genres(self):
         self.geneate_token()
         url  = "https://api.spotify.com/v1/recommendations/available-genre-seeds"
@@ -61,10 +65,13 @@ class SpotApi:
         return response.json()["genres"]
 
     def get_audio_description(self, id):
-        self.geneate_token()
-        url = f"https://api.spotify.com/v1/audio-features/{id}"
-        response = requests.get(url,headers = self.headers, timeout = 5)
-        return response.json()
+        if id:
+            self.geneate_token()
+            url = f"https://api.spotify.com/v1/audio-features/{id}"
+            response = requests.get(url,headers = self.headers, timeout = 5)
+            return response.json()
+        else:
+            return {}
     def get_artist_description(self, id):
         self.geneate_token()
         url = f"https://api.spotify.com/v1/artists/{id}"
