@@ -65,6 +65,7 @@ class SpotApi:
         url = f"https://api.spotify.com/v1/audio-features/{id}"
         response = requests.get(url,headers = self.headers, timeout = 5)
         return response.json()
+    
     def get_artist_description(self, id):
         self.geneate_token()
         url = f"https://api.spotify.com/v1/artists/{id}"
@@ -76,4 +77,34 @@ class SpotApi:
             "followers" :  artist["followers"]["total"]
         }
         return artist_description
-
+    
+    def get_artist_albums_description(self, id):
+        self.geneate_token()
+        url =  f"https://api.spotify.com/v1/artists/{id}/albums"
+        response = requests.get(url, headers = self.headers, timeout = 5)
+        albumsJson = response.json()
+        albums = albumsJson["items"]
+        albums_description = []
+        for album in albums:
+            albums_description.append({"id": album["id"], "name": album["name"]})
+        return albums_description
+    
+    def get_album_tracks(self, id):
+        self.geneate_token()
+        url = f"https://api.spotify.com/v1/albums/{id}/tracks"
+        response = requests.get(url, headers = self.headers, timeout = 5)
+        tracksJson = response.json()
+        tracks = tracksJson["items"]
+        tracks_description = []
+        for track in tracks:
+            tracks_description.append({"id": track["id"], "name": track["name"], "duration": track["duration_ms"]})
+        return tracks_description
+    
+    def get_artist_tracks(self, id):
+        self.geneate_token()
+        tracks_description = []
+        albums_description = self.get_artist_albums_description(id)
+        for album in albums_description:
+            tracks = self.get_album_tracks(album["id"])
+            tracks_description = tracks_description + tracks
+        return tracks_description
